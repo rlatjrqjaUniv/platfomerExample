@@ -570,7 +570,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveCooltime: 0.1
-  moveSpeed: 200
+  moveSpeed: 250
+  MaxSpeed: 0
   rb: {fileID: 1332165687}
 --- !u!114 &1332165690
 MonoBehaviour:

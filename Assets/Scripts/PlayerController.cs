@@ -6,8 +6,13 @@ public class PlayerController : MonoBehaviour
     
     public float moveCooltime; // 이동 키를 눌렀을때 소수점 단위로 힘을 가할건지(횟수), (moveSpedd * moveColltime = 가해지는 힘이라고 보면 됨)
     public float moveSpeed; // move Cooltime 1회에 얼만큼의 힘을 가할것인지(힘)
-    // 힘을 크게 하고 Colltime을 길게 주면 *관성*이 강해짐
-    // 힘을 작게 하고 Colltime을 짧게 주면 *관성*이 약해짐
+    // moveCooltime 초 동안 moveSpeed로 가해진 힘이 다 소진된다면 가속도가 붙지 않음
+    // moveCooltime 초 동안 moveSpeed로 가해진 힘이 남아있다면 가속도가 붙게 됨.
+    // ex) moveCooltime 0.1초, moveSpeed 100 이라면 0.1초동안 100의 힘이 다 소진되어서 가속도X
+    // ex) moveCooltime 0.1초, moveSpeed 110 이라면 0.1초동안 110의 힘이 다 소진되기 전에 0.1초가 지나고, 110의 힘이 또 추가되기 때문에 가속도O
+    
+    public float MaxSpeed; //Rigidbody에 info 보면 velocity 있음 너무 가속되지 않게 추가할 예정
+
     public Rigidbody2D rb;
     private bool isMoving = false;
 
