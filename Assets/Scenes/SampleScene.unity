@@ -261,6 +261,66 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &860329256
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 860329258}
+  - component: {fileID: 860329257}
+  m_Layer: 0
+  m_Name: InputManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &860329257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 860329256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 046df8cd1c0f84440ad914fdcbdc7b25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pc: {fileID: 1332165689}
+  KeyMappings:
+  - KeyCode: a
+    FunctionName: MoveLeft
+  - KeyCode: d
+    FunctionName: MoveRight
+  - KeyCode: w
+    FunctionName: Jump
+  - KeyCode: space
+    FunctionName: Jump
+  beforeKey:
+    KeyCode: 
+    FunctionName: 
+  lastKey:
+    KeyCode: 
+    FunctionName: 
+--- !u!4 &860329258
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 860329256}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1099781972
 GameObject:
   m_ObjectHideFlags: 0
@@ -388,7 +448,6 @@ GameObject:
   - component: {fileID: 1332165684}
   - component: {fileID: 1332165688}
   - component: {fileID: 1332165687}
-  - component: {fileID: 1332165690}
   - component: {fileID: 1332165689}
   m_Layer: 0
   m_Name: Player
@@ -570,33 +629,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  moveCooltime: 0.1
-  moveSpeed: 120
-  MaxSpeed: 4
+  defaultMoveSpeed: 2
+  acceleration: 0.05
+  MaxSpeed: 5
+  TimeToMaxSpeed: 3
   jumpPower: 8
-  rb: {fileID: 1332165687}
---- !u!114 &1332165690
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1332165683}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 046df8cd1c0f84440ad914fdcbdc7b25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pc: {fileID: 1332165689}
-  KeyMappings:
-  - KeyCode: a
-    FunctionName: MoveLeft
-  - KeyCode: d
-    FunctionName: MoveRight
-  - KeyCode: space
-    FunctionName: Jump
-  - KeyCode: w
-    FunctionName: Jump
+  recentSpeed: 0
 --- !u!1 &1715269545
 GameObject:
   m_ObjectHideFlags: 0
@@ -1661,3 +1699,4 @@ SceneRoots:
   - {fileID: 1332165686}
   - {fileID: 1108352223}
   - {fileID: 1099781975}
+  - {fileID: 860329258}
