@@ -564,14 +564,16 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1332165683}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 784e1894a5b5b9349a3a9e8304fec783, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  state: 0
   moveCooltime: 0.1
-  moveSpeed: 250
-  MaxSpeed: 0
+  moveSpeed: 120
+  MaxSpeed: 4
+  jumpPower: 8
   rb: {fileID: 1332165687}
 --- !u!114 &1332165690
 MonoBehaviour:
@@ -591,6 +593,10 @@ MonoBehaviour:
     FunctionName: MoveLeft
   - KeyCode: d
     FunctionName: MoveRight
+  - KeyCode: space
+    FunctionName: Jump
+  - KeyCode: w
+    FunctionName: Jump
 --- !u!1 &1715269545
 GameObject:
   m_ObjectHideFlags: 0
