@@ -629,10 +629,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  defaultMoveSpeed: 2
-  acceleration: 0.05
-  MaxSpeed: 5
-  TimeToMaxSpeed: 3
+  defaultMoveSpeed: 0.5
+  acceleration: 0.002
+  deceleration: 0.008
+  MaxSpeed: 2
+  TimeToMaxSpeed: 10
   jumpPower: 8
   recentSpeed: 0
 --- !u!1 &1715269545

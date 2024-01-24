@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     
     public float defaultMoveSpeed;
     public float acceleration;
+    public float deceleration;
     public float MaxSpeed;
     public float TimeToMaxSpeed;
 
@@ -79,8 +80,8 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator DecreaseSpeed()
     {
-        if (recentSpeed > 0) recentSpeed -= acceleration;
-        
+        if (recentSpeed > 0) recentSpeed -= deceleration;
+        if (recentSpeed < 0) recentSpeed = 0;
         yield return new WaitForSeconds(0.01f * TimeToMaxSpeed);
     }
 
