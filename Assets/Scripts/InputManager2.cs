@@ -17,7 +17,9 @@ public class InputManager2 : MonoBehaviour
         bool isLeftPressed = Input.GetKey(KeyCode.LeftArrow);
         bool isRightPressed = Input.GetKey(KeyCode.RightArrow);
 
-        if (!Input.anyKey)
+        // 가속 붙은 상태에서 아무키를 누르고 왼,오 떼면 멈추질 않는다
+        // 왼 오 누르고 있지 않다면으로 바꿈
+        if (!Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow))
         {
             Idle.Invoke();
         }
@@ -30,11 +32,13 @@ public class InputManager2 : MonoBehaviour
             isRightPressed = false;
         }
 
+        // Input.GetKey(KeyCode.LeftArrow);
         if (isLeftPressed)
         {
             LeftArrow.Invoke();
         }
-       
+
+        // Input.GetKey(KeyCode.RightArrow);
         if (isRightPressed)
         {
             RightArrow.Invoke();
