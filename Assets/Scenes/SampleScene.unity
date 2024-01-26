@@ -636,7 +636,7 @@ MonoBehaviour:
   deceleration: 3.1
   turnBreak: 6.5
   MaxSpeed: 2
-  TimeToMaxSpeed: 0
+  TimeToMaxSpeed: 3
   recentSpeed: 0
 --- !u!114 &1332165691
 MonoBehaviour:
@@ -664,6 +664,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b74576a50d273944d9c950163510a7b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isJumping: 0
   jumpVelocity: 15
 --- !u!1 &1374393192
 GameObject:
@@ -768,7 +769,7 @@ GameObject:
   - component: {fileID: 1715269550}
   - component: {fileID: 1715269549}
   - component: {fileID: 1715269551}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Tilemap
   m_TagString: Ground
   m_Icon: {fileID: 0}
