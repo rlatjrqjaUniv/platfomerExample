@@ -7,9 +7,9 @@ public class InputManager2 : MonoBehaviour
 {
     // 인스펙터 창에 나타내는 부분, 스크립트 들어간 오브젝트 끌어다 넣고 함수 선택하면 됨
     public UnityEvent Idle;
-    //public UnityEvent Jump;
     public UnityEvent LeftArrow;
     public UnityEvent RightArrow;
+    //public UnityEvent Jump;
 
     void Update()
     {

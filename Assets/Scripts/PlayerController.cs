@@ -3,105 +3,115 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    enum State { Idling, Moving, Jumping, Falling }
+    enum State { Idling, Moving, Jumping, Falling, Break }
     [SerializeField] State state;
 
-    public float defaultMoveSpeed;
-    public float acceleration;
-    public float deceleration;
-    public float turnBreak;
-    public float MaxSpeed;
-    public float TimeToMaxSpeed; //이거 내가 잘 몰라서 그러는건지 몬지 동작을 안하는 거 같음
-
-    //점프 높낮이 구현을 하다 보니 다른 스크립트에 작성했음 아마 나중에 합쳐...질 수도 있고? 그냥 둬도 되고
-    //public float jumpPower;
-
+    //// 컴포넌트 ////
     private Rigidbody2D rb;
     private SpriteRenderer Sprite;
+    private Animator animator;
+    private LayerMask layerMask;
 
-    [SerializeField] private float recentSpeed;
-    private bool isLeftMove = false;
-    private bool isRightMove = false;
-    //private bool isJumping = false;
+    //// 이동 ////
+    public float acceleration;                      // 가속도
+    public float deceleration;                      // 감속도
+    public float turnBreak;                         // 방향전환 감속도
+    public float MaxSpeed;                          // 최대 속도
+    [SerializeField] private float recentSpeed;     // 현재 속도
+    private bool isLeftMove = false;                // 왼쪽으로 bool
+    private bool isRightMove = false;               // 오른쪽으로 bool
+    //public float defaultMoveSpeed
+    //public float TimeToMaxSpeed
 
     private void Start()
     {
-        // Rigidbody2D 컴포넌트 가져오기
-        rb = GetComponent<Rigidbody2D>();
-        // flipx 하려고 스프라이트 가져오기
-        Sprite = GetComponent<SpriteRenderer>();
+        rb = GetComponent<Rigidbody2D>();            // Rigidbody2D 컴포넌트 가져오기
+        Sprite = GetComponent<SpriteRenderer>();     // SpriteRenderer 컴포넌트 가져오기
+        animator = GetComponent<Animator>();         // Animator 컴포넌트 가져오기
     }
 
-    // Time.deltaTime이 없어서 여기저기 추가했음
     private void Update()
     {
         if (isLeftMove)
         {
-            transform.position = new Vector3(transform.position.x - (recentSpeed * 5f * Time.deltaTime),
+            transform.position = new Vector3(transform.position.x - (recentSpeed * 5f * Time.deltaTime),  // Time.deltaTime 마다. 현재 포지션 - 현재 속도 *5 만큼 이동
             transform.position.y, transform.position.z);
         }
         else if (isRightMove)
         {
-            transform.position = new Vector3(transform.position.x + (recentSpeed * 5f * Time.deltaTime),
+            transform.position = new Vector3(transform.position.x + (recentSpeed * 5f * Time.deltaTime),  // Time.deltaTime 마다. 현재 포지션 + 현재 속도 *5 만큼 이동
             transform.position.y, transform.position.z);
         }
+        Animations();
     }
+    public void Animations()
+    {
+        if(recentSpeed <= 0)
+        {
+            animator.SetBool("isRun", false);
+            animator.SetBool("isBreak", false);
+        }
+        if (recentSpeed > 0)
+        {
+            animator.SetBool("isRun", true);
+        }
 
- 
-    // 이것도 정리하면 할 수 있을듯
-    // 슈퍼마리오1 참고해서 하다보니..! 어지러운 코드
-    // 속도가 0보다 크면서 오른쪽을 보고있다면 속도를 0까지 감속시키고
-    // Sptite.flipx 이후에 왼쪽으로 가속
-    public void MoveLeft()
+        if(rb.velocity.y > 0)
+        {
+            animator.SetBool("isFall", false);
+            animator.SetBool("isJump", true);
+        }
+        if (rb.velocity.y == 0)
+        {
+            animator.SetBool("isFall", false);
+            animator.SetBool("isJump", false);
+        }
+        if (rb.velocity.y < 0)
+        {
+            animator.SetBool("isFall", true);
+        }
+    }
+    public void MoveLeft()                           ////// 왼쪽 이동 함수    
     {        
-        if(recentSpeed>0&& !Sprite.flipX)
+        if(recentSpeed>0&& !Sprite.flipX)            //// 움직임이 있고 오른쪽을 보고 있다면
         {
-            TurnBreak(); //DecreaseSpeed 랑 똑같은데 감속 변수가 다름
+            animator.SetBool("isBreak", true);
+            TurnBreak();                             // TurnBreak() 함수 실행. 급격히 속도 감소
         }
-        if(recentSpeed==0)
+        if(recentSpeed==0)                           //// 현재 속도 == 0 이면
         {
-            Sprite.flipX = true;
-            isRightMove = false;
-            isLeftMove = true;
+            animator.SetBool("isBreak", false);
+            Sprite.flipX = true;                     // 스프라이트가 왼쪽 바라보게 함
+            isRightMove = false;                     // 오른쪽 이동 불가능
+            isLeftMove = true;                       // 왼쪽 이동 가능
         }
-        if (isLeftMove)
+        if (isLeftMove)                              //// 왼쪽 이동이 가능하다면
         {
-            StartCoroutine(IncreaseSpeed());
-        }
-    }
-
-    public void MoveRight()
-    {
-        if (recentSpeed > 0 && Sprite.flipX)
-        {
-            TurnBreak();
-        }
-        if (recentSpeed == 0)
-        {
-            Sprite.flipX = false;
-            isRightMove = true;
-            isLeftMove = false;
-        }
-        if (isRightMove)
-        {
-            StartCoroutine(IncreaseSpeed());
+            StartCoroutine(IncreaseSpeed());         // IncreaseSpeed() 함수 실행. 천천히 가속
         }
     }
 
-   /* public void Jump()
+    public void MoveRight()                          ////// 오른쪽 이동 함수
     {
-        if (!isJumping)
+        if (recentSpeed > 0 && Sprite.flipX)         //// 움직임이 있고 왼쪽을 보고있다면
         {
-            isJumping = true;
-            rb.AddForce(Vector2.up * jumpPower * 150);
+            animator.SetBool("isBreak", true);
+            TurnBreak();                             // TurnBreak() 함수 실행. 급격히 속도 감소
+        }
+        if (recentSpeed == 0)                        //// 현재 속도 == 0 이면
+        {
+            animator.SetBool("isBreak", false);
+            Sprite.flipX = false;                    // 스프라이트가 왼쪽 바라보게 함
+            isLeftMove = false;                      // 왼쪽 이동 불가능
+            isRightMove = true;                      // 오른쪽 이동 가능
+        }
+        if (isRightMove)                             //// 오른쪽 이동이 가능하다면
+        {
+            StartCoroutine(IncreaseSpeed());         // IncreaseSpeed() 함수 실행. 천천히 가속
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        isJumping = false;
-    }
-   */
+    
     public void Idle()
     {
         StartCoroutine(DecreaseSpeed());
