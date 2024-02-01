@@ -17,13 +17,17 @@ public class PlayerController : MonoBehaviour
     public float deceleration;                      // 감속도
     public float turnBreak;                         // 방향전환 감속도
     public float MaxSpeed;                          // 최대 속도
-    [SerializeField] private float recentSpeed;     // 현재 속도
+    private float recentSpeed;     // 현재 속도
     private bool isLeftMove = false;                // 왼쪽으로 bool
     private bool isRightMove = false;               // 오른쪽으로 bool
     //public float defaultMoveSpeed
     //public float TimeToMaxSpeed
 
-    private void Start()
+    //// 캐릭터 정보 : 나중에 컴포넌트 분리 해도 됨 ////
+    public GameObject[] lifeIMG;
+    int life = 3;
+
+    void Start()
     {
         rb = GetComponent<Rigidbody2D>();            // Rigidbody2D 컴포넌트 가져오기
         Sprite = GetComponent<SpriteRenderer>();     // SpriteRenderer 컴포넌트 가져오기
@@ -138,5 +142,62 @@ public class PlayerController : MonoBehaviour
         if (recentSpeed > 0) recentSpeed -= turnBreak * Time.deltaTime;
         if (recentSpeed < 0) recentSpeed = 0;
         yield return 0;
+    }
+
+
+    //// 나중에 컴포넌트 분리 해도 됨 ////
+    public void HasDamaged()
+    {
+        if(life >=1) 
+        {
+            lifeIMG[life - 1].SetActive(false);
+
+            if (life == 1)
+            {
+                Debug.Log("마이가 쓰러졌습니다.");
+                GameOver();
+            }
+        }
+        else
+        {
+            //라이프가 비정상적
+            //0 또는 음수
+        }
+
+        life--;
+        StartCoroutine(BlinkEffect());
+    }
+    public void GameOver()
+    {
+        //나중에 다른 오브젝트에 메세지 던지는 방식으로 수정하기
+        acceleration = 0;
+        Destroy(GetComponent<Jump>());
+        Destroy(GetComponent<JumpSetting>());
+    }
+
+    //깜빡거리는 효과
+    IEnumerator BlinkEffect()
+    {
+        int count = 0;
+
+        while(count < 2)
+        {
+            float fadeCount = 1.0f;
+
+            while (fadeCount > 0.0f)
+            {
+                fadeCount -= 0.1f;
+                yield return new WaitForSeconds(0.01f);
+                Sprite.color = new Color(1, 1, 1, fadeCount);
+            }
+            while (fadeCount<1.0f)
+            {
+                fadeCount += 0.1f;
+                yield return new WaitForSeconds(0.01f);
+                Sprite.color = new Color(1, 1, 1, fadeCount);
+            }
+            
+            count++;
+        }
     }
 }

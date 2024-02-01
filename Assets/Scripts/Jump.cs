@@ -45,6 +45,13 @@ public class Jump : MonoBehaviour
                     //anim.SetBool("isJump", false); // 애니메이션 되돌리기
                 }
                 isJumping = false;
+
+                //낙하 데미지
+                if (rb.velocity.y < -25)
+                {
+                    PlayerController pc = GetComponent<PlayerController>();
+                    pc.HasDamaged();
+                }
             }
         }
     }
