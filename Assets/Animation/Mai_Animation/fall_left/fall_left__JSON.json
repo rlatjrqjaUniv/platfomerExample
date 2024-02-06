@@ -1,0 +1,41 @@
+﻿{
+	"AnimationClip":[
+	{ "Index":0, "Name":"mai_fall", "FPS":30, "Frames":34 }
+	],
+	"FrameImage":[
+	{ "AnimationClipIndex":0, "Frame":0, "FileName":"fall_left_mai_fall__0.png" },
+	{ "AnimationClipIndex":0, "Frame":1, "FileName":"fall_left_mai_fall__1.png" },
+	{ "AnimationClipIndex":0, "Frame":2, "FileName":"fall_left_mai_fall__2.png" },
+	{ "AnimationClipIndex":0, "Frame":3, "FileName":"fall_left_mai_fall__3.png" },
+	{ "AnimationClipIndex":0, "Frame":4, "FileName":"fall_left_mai_fall__4.png" },
+	{ "AnimationClipIndex":0, "Frame":5, "FileName":"fall_left_mai_fall__5.png" },
+	{ "AnimationClipIndex":0, "Frame":6, "FileName":"fall_left_mai_fall__6.png" },
+	{ "AnimationClipIndex":0, "Frame":7, "FileName":"fall_left_mai_fall__7.png" },
+	{ "AnimationClipIndex":0, "Frame":8, "FileName":"fall_left_mai_fall__8.png" },
+	{ "AnimationClipIndex":0, "Frame":9, "FileName":"fall_left_mai_fall__9.png" },
+	{ "AnimationClipIndex":0, "Frame":10, "FileName":"fall_left_mai_fall__10.png" },
+	{ "AnimationClipIndex":0, "Frame":11, "FileName":"fall_left_mai_fall__11.png" },
+	{ "AnimationClipIndex":0, "Frame":12, "FileName":"fall_left_mai_fall__12.png" },
+	{ "AnimationClipIndex":0, "Frame":13, "FileName":"fall_left_mai_fall__13.png" },
+	{ "AnimationClipIndex":0, "Frame":14, "FileName":"fall_left_mai_fall__14.png" },
+	{ "AnimationClipIndex":0, "Frame":15, "FileName":"fall_left_mai_fall__15.png" },
+	{ "AnimationClipIndex":0, "Frame":16, "FileName":"fall_left_mai_fall__16.png" },
+	{ "AnimationClipIndex":0, "Frame":17, "FileName":"fall_left_mai_fall__17.png" },
+	{ "AnimationClipIndex":0, "Frame":18, "FileName":"fall_left_mai_fall__18.png" },
+	{ "AnimationClipIndex":0, "Frame":19, "FileName":"fall_left_mai_fall__19.png" },
+	{ "AnimationClipIndex":0, "Frame":20, "FileName":"fall_left_mai_fall__20.png" },
+	{ "AnimationClipIndex":0, "Frame":21, "FileName":"fall_left_mai_fall__21.png" },
+	{ "AnimationClipIndex":0, "Frame":22, "FileName":"fall_left_mai_fall__22.png" },
+	{ "AnimationClipIndex":0, "Frame":23, "FileName":"fall_left_mai_fall__23.png" },
+	{ "AnimationClipIndex":0, "Frame":24, "FileName":"fall_left_mai_fall__24.png" },
+	{ "AnimationClipIndex":0, "Frame":25, "FileName":"fall_left_mai_fall__25.png" },
+	{ "AnimationClipIndex":0, "Frame":26, "FileName":"fall_left_mai_fall__26.png" },
+	{ "AnimationClipIndex":0, "Frame":27, "FileName":"fall_left_mai_fall__27.png" },
+	{ "AnimationClipIndex":0, "Frame":28, "FileName":"fall_left_mai_fall__28.png" },
+	{ "AnimationClipIndex":0, "Frame":29, "FileName":"fall_left_mai_fall__29.png" },
+	{ "AnimationClipIndex":0, "Frame":30, "FileName":"fall_left_mai_fall__30.png" },
+	{ "AnimationClipIndex":0, "Frame":31, "FileName":"fall_left_mai_fall__31.png" },
+	{ "AnimationClipIndex":0, "Frame":32, "FileName":"fall_left_mai_fall__32.png" },
+	{ "AnimationClipIndex":0, "Frame":33, "FileName":"fall_left_mai_fall__33.png" }
+	]
+}
