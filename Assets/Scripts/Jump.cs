@@ -91,22 +91,23 @@ public class Jump : MonoBehaviour
         {
 
             Bounds bounds = GetComponent<Collider2D>().bounds;   // 콜라이더의 경계를 얻음 (직접 설정해도 되긴 함)
+            Vector2 bsize = new Vector2(bounds.size.x, bounds.size.y) - new Vector2(0.1f, 0f);
 
-            RaycastHit2D rayHit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, Vector2.down, 1, LayerMask.GetMask("Platform"));
+            RaycastHit2D rayHit = Physics2D.BoxCast(bounds.center, bsize, 0f, Vector2.down, 0.15f, LayerMask.GetMask("Platform"));
                                                                  // 아래 방향으로 1만큼 ray 쏴서, Platform 인지 확인
-            Vector2 start = new Vector2(bounds.min.x, bounds.center.y); // Boxcast의 시작점 계산
-            Vector2 end = new Vector2(bounds.max.x, bounds.center.y);   // Boxcast의 끝점 계산
+            Vector2 start = new Vector2(bounds.min.x, bounds.min.y); // Boxcast의 시작점 계산
+            Vector2 end = new Vector2(bounds.max.x, bounds.min.y);   // Boxcast의 끝점 계산
             
-            Debug.DrawRay(start, Vector2.down * 1, Color.red);
-            Debug.DrawRay(end, Vector2.down * 1, Color.red);
+            Debug.DrawRay(start, Vector2.down * 0.15f, Color.red);
+            Debug.DrawRay(end, Vector2.down * 0.15f, Color.red);
             if (rayHit.collider != null)                         //// Platform과 충돌했다면
             { 
                 isJumping = false;                               // 점프 중이 아님
-
-                if (rb.velocity.y < -25)                         // 떨어지는 속도가 -25보다 작았다면 (빨리 떨어졌다면) *그런데 이건 속도 기준이니까 나중에 높이 기준으로 바꿔야 하려나..?
-                {  
-                    pc.HasDamaged();                             // PlayerController.cs에 HasDamaged 함수 실행
+                if (rb.velocity.y < -25&&!pc.IsBlinkEffectRunning)                         // 떨어지는 속도가 -25보다 작았다면 (빨리 떨어졌다면)
+                {
+                        pc.HasDamaged();                             // PlayerController.cs에 HasDamaged 함수 실행
                 }
+                rb.velocity = new Vector2(rb.velocity.x, 0);
             }
             else                                                 // Platform과 충돌하지 않았다면
             {

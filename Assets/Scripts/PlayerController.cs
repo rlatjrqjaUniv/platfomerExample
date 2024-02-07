@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     //// 캐릭터 정보 : 나중에 컴포넌트 분리 해도 됨 ////
     public GameObject[] lifeIMG;
     int life = 3;
+    public bool IsBlinkEffectRunning = false;
 
     //// 컴포넌트 ////
     private Rigidbody2D rb;
@@ -18,19 +19,25 @@ public class PlayerController : MonoBehaviour
 
     //// 이동 ////
     public float acceleration;                      // 가속도
+    public float runacceleration;                   // 달리기 가속도
     public float deceleration;                      // 감속도
-    public float checkRun;                          // 달리는 속도의 기준
     public float turnBreak;                         // 방향전환 감속도
+    public float checkRun;                          // 달리는 속도의 기준
     public float MaxSpeed;                          // 최대 속도
     public float recentSpeed;                       // 현재 속도
     private bool isLeftMove = false;                // 왼쪽으로 bool
     private bool isRightMove = false;               // 오른쪽으로 bool
- 
 
-  
+    // 달리기 버튼 //
+    private float MaxSpeed2;                        // 저장,교환용 변수
+    private float acceleration2;                    // 저장,교환용 변수
+    public float RunSpeed;
+    // 위에 있는 runacceleration
 
     void Start()
     {
+        MaxSpeed2 = MaxSpeed;
+        acceleration2 = acceleration;
         rb = GetComponent<Rigidbody2D>();           // Rigidbody2D 컴포넌트 가져오기
         Sprite = GetComponent<SpriteRenderer>();    // SpriteRenderer 컴포넌트 가져오기
         animator = GetComponent<Animator>();        // Animator 컴포넌트 가져오기
@@ -54,15 +61,23 @@ public class PlayerController : MonoBehaviour
     {
         if(recentSpeed <= 0)
         {
-            animator.SetBool("isRun", false);
+            animator.SetBool("isMove", false);
             animator.SetBool("isBreak", false);
         }
-        if (recentSpeed > 0)
+        else if (recentSpeed < checkRun && recentSpeed > 0)
         {
+            animator.SetBool("isRun", false);
+            animator.SetBool("isBreak", false);
+            animator.SetBool("isMove", true);
+        }
+        else if (recentSpeed >= checkRun)
+        {
+            animator.SetBool("isBreak", false);
+            animator.SetBool("isMove", false);
             animator.SetBool("isRun", true);
         }
 
-        if(rb.velocity.y > 0)
+        if (rb.velocity.y > 0)
         {
             animator.SetBool("isFall", false);
             animator.SetBool("isJump", true);
@@ -78,22 +93,13 @@ public class PlayerController : MonoBehaviour
         }
     }
     
-    //////////////////////////////////////////////////////////////////////////////////////////////////////
-    public void EnterLeftWall()  ////////////////////// 만들긴 했는데......... 온콜리전을 쓰는 게 좋지 않을까????????
-    {//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public void EnterLeftWall()  
+    {
         // 레이의 시작점
-        Vector2 startPoint1 = new Vector2(transform.position.x, transform.position.y + 0.5f);
-        Vector2 startPoint2 = new Vector2(transform.position.x, transform.position.y - 0.5f);
+        Bounds bounds = GetComponent<Collider2D>().bounds;
+        Vector2 bsize = new Vector2(bounds.size.x, bounds.size.y) - new Vector2(0f, 0.5f);
+        RaycastHit2D rayHit = Physics2D.BoxCast(bounds.center, bsize, 0f, Vector2.left, 0f, LayerMask.GetMask("Platform"));
 
-        // 레이를 그릴 끝점
-        Vector2 endPoint1 = startPoint1 + Vector2.left * 0.5f; // maxDistance는 원하는 거리입니다.
-        Vector2 endPoint2 = startPoint2 + Vector2.left * 0.5f; // maxDistance는 원하는 거리입니다.
-
-        // Debug.DrawLine 함수를 사용하여 레이를 그립니다.
-        Debug.DrawLine(startPoint1, endPoint1, new Color(0, 1, 0));
-        Debug.DrawLine(startPoint2, endPoint2, new Color(0, 1, 0));
-
-        RaycastHit2D rayHit = Physics2D.BoxCast(new Vector2(transform.position.x, transform.position.y), new Vector2(0.5f, 0.5f), 0f, Vector2.left, 0.25f, LayerMask.GetMask("Platform"));
         if (rayHit.collider != null)           
         {
             recentSpeed = 0;
@@ -101,23 +107,12 @@ public class PlayerController : MonoBehaviour
         }
       
     }
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public void EnterRightWall() ////////////////////// 만들긴 했는데......... 온콜리전을 쓰는 게 좋지 않을까????????
-    {/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // 레이의 시작점
-        Vector2 startPoint1 = new Vector2(transform.position.x, transform.position.y + 0.5f);
-        Vector2 startPoint2 = new Vector2(transform.position.x, transform.position.y - 0.5f);
 
-        // 레이를 그릴 끝점
-        Vector2 endPoint1 = startPoint1 + Vector2.right * 0.5f; // maxDistance는 원하는 거리입니다.
-        Vector2 endPoint2 = startPoint2 + Vector2.right * 0.5f; // maxDistance는 원하는 거리입니다.
-
-        // Debug.DrawLine 함수를 사용하여 레이를 그립니다.
-        Debug.DrawLine(startPoint1, endPoint1, new Color(0, 1, 0));
-        Debug.DrawLine(startPoint2, endPoint2, new Color(0, 1, 0));
-
-      
-        RaycastHit2D rayHit= Physics2D.BoxCast(new Vector2(transform.position.x, transform.position.y), new Vector2(0.5f, 0.5f), 0f, Vector2.right, 0.25f, LayerMask.GetMask("Platform"));
+    public void EnterRightWall() 
+    {
+        Bounds bounds = GetComponent<Collider2D>().bounds;
+        Vector2 bsize = new Vector2(bounds.size.x, bounds.size.y) - new Vector2(0f, 0.5f);
+        RaycastHit2D rayHit = Physics2D.BoxCast(bounds.center, bsize, 0f, Vector2.right, 0f, LayerMask.GetMask("Platform"));
 
         if (rayHit.collider != null) 
         {
@@ -132,12 +127,12 @@ public class PlayerController : MonoBehaviour
         EnterLeftWall();
         if (recentSpeed > 0 && !Sprite.flipX)       //// 움직임이 있고 오른쪽을 보고 있다면
         {
-            Idle();                                 // Idle() 함수 실행. 천천히 속도 감소
+            StartCoroutine(DecreaseSpeed(deceleration));
         }
         if (recentSpeed >= checkRun && !Sprite.flipX)       //// checkRun 속도보다 빠르고 오른쪽을 보고 있다면
         {
             animator.SetBool("isBreak", true);
-            TurnBreak();                            // TurnBreak() 함수 실행. 급격히 속도 감소
+            StartCoroutine(DecreaseSpeed(turnBreak));
         }
         if (recentSpeed == 0)                          //// 현재 속도 == 0 이면
         {
@@ -148,7 +143,7 @@ public class PlayerController : MonoBehaviour
         }
         if (isLeftMove)                             //// 왼쪽 이동이 가능하다면
         {
-            StartCoroutine(IncreaseSpeed());        // IncreaseSpeed() 함수 실행. 천천히 가속
+            StartCoroutine(IncreaseSpeed(acceleration));        // IncreaseSpeed() 함수 실행. 천천히 가속
         }
     }
 
@@ -157,12 +152,12 @@ public class PlayerController : MonoBehaviour
         EnterRightWall(); 
         if (recentSpeed > 0 && Sprite.flipX)       //// 움직임이 있고 오른쪽을 보고 있다면
         {
-            Idle();                                 // Idle() 함수 실행. 천천히 속도 감소
+            StartCoroutine(DecreaseSpeed(deceleration));
         }
         if (recentSpeed >= checkRun && Sprite.flipX)       //// checkRun 속도보다 빠르고 왼쪽을 보고 있다면
         {
             animator.SetBool("isBreak", true);
-            TurnBreak();                            // TurnBreak() 함수 실행. 급격히 속도 감소
+            StartCoroutine(DecreaseSpeed(turnBreak));
         }
         if (recentSpeed == 0)                       //// 현재 속도 == 0 이면
         {
@@ -173,27 +168,33 @@ public class PlayerController : MonoBehaviour
         }
         if (isRightMove)                            //// 오른쪽 이동이 가능하다면
         {
-            StartCoroutine(IncreaseSpeed());        // IncreaseSpeed() 함수 실행. 천천히 가속
+            StartCoroutine(IncreaseSpeed(acceleration));        // IncreaseSpeed() 함수 실행. 천천히 가속
         }
     }
 
-    
+    public void KeyDownX()
+    {
+        MaxSpeed = RunSpeed;
+        acceleration = runacceleration;
+    }
+    public void KeyUpX()
+    {
+        MaxSpeed = MaxSpeed2;
+        acceleration = acceleration2;
+    }
     public void Idle()
     {
-        StartCoroutine(DecreaseSpeed());
-    }
-    public void TurnBreak()
-    {
-        StartCoroutine(TurnBreakSpeed());
+        StartCoroutine(DecreaseSpeed(deceleration));
     }
 
-    IEnumerator IncreaseSpeed()
+
+    IEnumerator IncreaseSpeed(float speed)
     {
-        if (recentSpeed < MaxSpeed) recentSpeed += acceleration * Time.deltaTime;
+        if (recentSpeed < MaxSpeed) recentSpeed += speed * Time.deltaTime;
         yield return null;
     }
 
-    IEnumerator DecreaseSpeed()
+    IEnumerator DecreaseSpeed(float speed)
     {
         if (recentSpeed > 0) recentSpeed -= deceleration * Time.deltaTime;
         if (recentSpeed < 0) recentSpeed = 0;
@@ -239,9 +240,11 @@ public class PlayerController : MonoBehaviour
     //깜빡거리는 효과
     IEnumerator BlinkEffect()
     {
+        IsBlinkEffectRunning = true; // 블링크 이펙트가 실행 중임을 표시
+
         int count = 0;
 
-        while(count < 2)
+        while (count < 2)
         {
             float fadeCount = 1.0f;
 
@@ -251,14 +254,16 @@ public class PlayerController : MonoBehaviour
                 yield return new WaitForSeconds(0.01f);
                 Sprite.color = new Color(1, 1, 1, fadeCount);
             }
-            while (fadeCount<1.0f)
+            while (fadeCount < 1.0f)
             {
                 fadeCount += 0.1f;
                 yield return new WaitForSeconds(0.01f);
                 Sprite.color = new Color(1, 1, 1, fadeCount);
             }
-            
+
             count++;
         }
+
+        IsBlinkEffectRunning = false; // 블링크 이펙트가 끝났음을 표시
     }
 }
