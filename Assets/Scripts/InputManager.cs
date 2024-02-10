@@ -8,22 +8,12 @@ public class InputManager : MonoBehaviour
     public UnityEvent Idle;
     public UnityEvent LeftArrow;
     public UnityEvent RightArrow;
-    public UnityEvent KeyDownX;
-    public UnityEvent KeyUpX;
 
     void Update()
     {
         bool isLeftPressed = Input.GetKey(KeyCode.LeftArrow);                         // 왼쪽 화살표 키를 누르고 있는지 확인하는 bool
         bool isRightPressed = Input.GetKey(KeyCode.RightArrow);                       // 오른쪽 화살표 키를 누르고 있는지 확인하는 bool
 
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            KeyDownX.Invoke();
-        }
-        if (Input.GetKeyUp(KeyCode.X))
-        {
-            KeyUpX.Invoke();
-        }
         if (!Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow))    //// 왼·오른쪽 화살표 키를 누르고 있지 않다면
         {
             Idle.Invoke();                                                            // Idle 함수 호출 (감속하는 함수)
@@ -46,7 +36,6 @@ public class InputManager : MonoBehaviour
             RightArrow.Invoke();                                                      // RightArrow 함수 호출 (가속하는 함수)
         }
 
-     
         
     }
 }
